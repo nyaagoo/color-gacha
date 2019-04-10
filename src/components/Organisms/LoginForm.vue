@@ -37,14 +37,6 @@ export default class LoginForm extends Vue {
   logout() {
     firebase.auth().signOut();
   }
-
-  created() {
-    firebase.auth().onAuthStateChanged(user => {
-      // eslint-disable-next-line no-console
-      console.log(user);
-      this.user = user;
-    });
-  }
 }
 </script>
 <style lang="stylus" scoped></style>

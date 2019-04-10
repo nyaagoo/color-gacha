@@ -13,6 +13,7 @@ import router from "@/router";
 class Login extends VuexModule {
   // #region STATE
   user: firebase.User | undefined = undefined;
+  uid: string = "";
 
   // #endregion
 
@@ -20,6 +21,10 @@ class Login extends VuexModule {
   @Mutation // counter
   public SET_USER(user: firebase.User | undefined) {
     this.user = user;
+  }
+  @Mutation // counter
+  public SET_UID(uid: string) {
+    this.uid = uid;
   }
 
   // #endregion
@@ -39,6 +44,12 @@ class Login extends VuexModule {
 
   @Action({ rawError: true })
   public async loginAnonymously() {
+    firebase.auth().onAuthStateChanged(user => {
+      this.SET_UID(user!.uid);
+      // eslint-disable-next-line no-console
+      console.log(user!.uid);
+    });
+
     try {
       await firebase
         .auth()
