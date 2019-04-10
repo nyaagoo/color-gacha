@@ -7,7 +7,7 @@
 import { Component, Vue } from "vue-property-decorator";
 import router from "@/router";
 import firebase from "firebase";
-import LoginTemplateVue from "@/views/Templates/Login.vue";
+import LoginTemplateVue from "@/components/Templates/Login.vue";
 
 @Component({
   name: "login",
@@ -16,19 +16,6 @@ import LoginTemplateVue from "@/views/Templates/Login.vue";
   }
 })
 export default class Login extends Vue {
-  /*
-    h1 {{headingTitle}}
-    v-btn(color="primary" @click="login()") Google Login
-    v-btn(color="primary" @click="logout()") Logout
-    p isLogin:{{isLogin}}
-    p(v-if="user !== null") email: {{user.email}}
-    .memo-container
-      p(v-for="(memo, index) in memos") {{memo}}
-    v-text-field(v-model="inputMemo" label="追加するメモ" @keyup.enter="AddMemo()")
-    
-    v-btn(color="primary" @click="loadMemo()") LoadMemos
-    v-btn(color="primary" @click="saveMemo()") SaveMemos
-  */
   user: firebase.User | null = null;
   headingTitle: string = "ログイン";
   isLogin = false;
@@ -39,8 +26,6 @@ export default class Login extends Vue {
     firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider());
     this.user = null;
     this.isLogin = false;
-
-    // router.push("home");
   }
 
   created() {

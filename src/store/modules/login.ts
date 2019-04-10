@@ -7,6 +7,7 @@ import {
 } from "vuex-module-decorators";
 import store from "@/store/store";
 import firebase from "firebase";
+import router from "@/router";
 
 @Module({ dynamic: true, store, name: "login", namespaced: true })
 class Login extends VuexModule {
@@ -37,8 +38,32 @@ class Login extends VuexModule {
   }
 
   @Action({ rawError: true })
-  public logout() {
-    firebase.auth().signOut();
+  public async loginAnonymously() {
+    try {
+      await firebase
+        .auth()
+        .signInAnonymously()
+        .catch(function(error) {
+          // eslint-disable-next-line no-console
+          console.log(error.code);
+          // eslint-disable-next-line no-console
+          console.log(error.message);
+          alert("匿名ログインに失敗しました");
+        });
+      router.push("/gacha");
+    } catch (error) {
+      alert("loginに失敗しました。");
+    }
+  }
+
+  @Action({ rawError: true })
+  public async logout() {
+    try {
+      await firebase.auth().signOut();
+      router.push("/");
+    } catch (error) {
+      alert("logoutに失敗しました。");
+    }
   }
   // #endregion
 }

@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Router from "vue-router";
-import Login from "./views/Pages/Login.vue";
+import Login from "@/components/Pages/Login.vue";
+import Gacha from "@/components/Pages/Gacha.vue";
 
 Vue.use(Router);
 
@@ -14,10 +15,9 @@ export default new Router({
       component: Login
     },
     {
-      path: "/about",
-      name: "about",
-      component: () =>
-        import(/* webpackChunkName: "about" */ "./views/Pages/About.vue")
+      path: "/gacha",
+      name: "gacha",
+      component: Gacha
     }
   ]
 });

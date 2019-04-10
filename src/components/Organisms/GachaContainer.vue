@@ -1,27 +1,27 @@
 <template lang="pug">
-  .login-container
+  .gacha-container
     section.section-intro
-      p ガチャで色をゲットして
-      p あつめて
-      p ながめよう！！
+      p GachaContainer
+      v-btn(@click="testes()") Insert
     section.section-login
       login-form
 </template>
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import router from "@/router";
-import LoginForm from "@/components/Organisms/LoginForm.vue";
-
+import { Color } from "@/model/color.ts";
+import { gacha } from "@/store/index";
 @Component({
-  name: "login-container",
-  components: {
-    "login-form": LoginForm
-  }
+  name: "gacha-container",
+  components: {}
 })
-export default class LoginContainer extends Vue {}
+export default class GachaContainer extends Vue {
+  colorList: Color[] = [];
+  testes() {}
+}
 </script>
 <style lang="stylus" scoped>
-.login-container
+.gacha-container
   width 800px
   margin auto
 .section-intro

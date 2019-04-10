@@ -32,8 +32,3 @@ npm run test:unit
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
-
-
-###
-npm install --save-dev pug
-npm install --save-dev pug-plain-loader

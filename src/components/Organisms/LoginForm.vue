@@ -3,14 +3,8 @@
     v-form(v-model="valid")
       v-container
         v-layout(row wrap)
-          v-flex(xs6)
-            v-text-field(v-model="name", :rules="[rules.required]", :counter="10", label="Name")
-          v-flex(xs6)
-            v-text-field(v-model="email", :rules="[rules.required, rules.email]", label="E-mail")
           v-flex(xs12)
-            v-btn(outline color="primary" @click="login()") ゲストログイン
-            v-btn(outline color="primary" @click="login2()") ゲストログイン2
-            v-btn(outline color="primary" @click="logout()") ログアウト
+            v-btn(color="primary" @click="login()") 始める！！
 
     
 </template>
@@ -38,19 +32,7 @@ export default class LoginForm extends Vue {
     }
   };
   login() {
-    firebase
-      .auth()
-      .signInAnonymously()
-      .catch(function(error) {
-        // eslint-disable-next-line no-console
-        console.log(error.code);
-        // eslint-disable-next-line no-console
-        console.log(error.message);
-        alert("匿名ログインに失敗しました");
-      });
-  }
-  login2() {
-    firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider());
+    login.loginAnonymously();
   }
   logout() {
     firebase.auth().signOut();
