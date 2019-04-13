@@ -5,35 +5,34 @@ import { Request, Response, NextFunction } from "express";
 
 var serviceAccount = require("../dev/color-gacha-firebase-adminsdk-sy9f7-80bc62164e.json");
 
+import * as cors from "cors";
+const corsHandler = cors({ origin: true });
+
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: "https://color-gacha.firebaseio.com"
 });
 // import * as cors from "cors";
 
+exports.sample = functions.https.onRequest((req, res) => {
+  corsHandler(req, res, () => {
+    res.send("Passed.");
+  });
+});
+
 const app = express();
 
 app.get("/users", validate, aa);
 app.get("/users/b", aa);
-app
-  .route("/book")
-  .get(function(req, res) {
-    res.send("Get a random book");
-  })
-  .post(function(req, res) {
-    res.send("Add a book");
-  })
-  .put(function(req, res) {
-    res.send("Update the book");
-  });
 
-app.get("/gacha", validate, Gacha);
+app.get("/gacha", Gacha);
 export function validate(req: Request, res: Response, next: NextFunction) {
   // eslint-disable-next-line no-console
   console.log("Validation");
   next();
 }
 export async function Gacha(req: Request, res: Response) {
+  corsHandler(req, res, () => {});
   const colorList: Color[] = [];
   await admin
     .firestore()
@@ -60,13 +59,17 @@ export interface Color {
 }
 
 export async function aa(req: Request, res: Response) {
-  const users = [{ id: 1, name: "sss" }];
-  // データを返却
-  res.send(JSON.stringify(users));
+  corsHandler(req, res, () => {
+    const users = [{ id: 1, name: "ddaa" }];
+    // データを返却
+    res.send(JSON.stringify(users));
+  });
 }
 
 app.get("/users/a", [], (req: Request, res: Response) => {
-  const users = [{ id: 1, name: "dfs" }];
+  const users = [{ id: 1, name: "fdsadsdf" }];
+
+  res.header("Access-Control-Allow-Origin", "*");
   res.send(JSON.stringify(users));
 });
 

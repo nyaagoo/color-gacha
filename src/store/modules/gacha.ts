@@ -12,6 +12,7 @@ import { login } from "@/store/index";
 
 import { Color } from "@/model/color.ts";
 
+import axios, { AxiosRequestConfig } from "axios";
 import firebase from "firebase";
 
 @Module({ dynamic: true, store, name: "gacha", namespaced: true })
@@ -44,8 +45,29 @@ class Gacha extends VuexModule {
 
   // #region ACTION
   @Action({ rawError: true })
-  public fetchColorList() {
-    const colorList: Color[] = [];
+  public async fetchColorList() {
+    const config: AxiosRequestConfig = {
+      headers: {
+        "Content-Type": "application/json;charset=UTF-8"
+      }
+    };
+    console.log("Helloaaaaaaaaaaa");
+    const res = await axios.get(
+      "https://us-central1-color-gacha.cloudfunctions.net/app/gacha",
+      {
+        headers: {
+          "Content-Type": "application/json;charset=UTF-8"
+        }
+      }
+    );
+
+    console.log(res.data);
+
+    const colorList: Color[] = res.data.map((x: Color) => ({ ...x } as Color));
+
+    this.SET_COLOR_LIST(colorList);
+    this.SET_GACHA_LIST(colorList);
+    /*
     firebase
       .firestore()
       .collection("colors")
@@ -76,14 +98,24 @@ class Gacha extends VuexModule {
           console.log("No such document!");
         }
       });
+      */
   }
 
   @Action({ rawError: true })
-  public gacha() {
+  public async gacha() {
     if (!login.uid) {
       alert("ログイン失敗");
       return;
     }
+    const res = await axios.get(
+      "https://us-central1-color-gacha.cloudfunctions.net/app/gacha",
+      {
+        headers: {
+          "Content-Type": "application/json;charset=UTF-8"
+        }
+      }
+    );
+    /*
     const gachaList: Color[] = [];
     for (let i = 0; i < 10; i++) {
       const random = Math.floor(Math.random() * 11);
@@ -97,6 +129,7 @@ class Gacha extends VuexModule {
       .set({
         hasColor: gachaList.map(x => x.id)
       });
+      */
     /*
     const db = firebase.firestore();
     for (let i = 0; i < 10; i++) {
