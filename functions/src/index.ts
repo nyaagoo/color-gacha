@@ -38,8 +38,8 @@ export async function Gacha(req: Request, res: Response) {
     .firestore()
     .collection("colors")
     .get()
-    .then(async function(querySnapshot) {
-      await querySnapshot.forEach(async function(doc) {
+    .then(async querySnapshot => {
+      await querySnapshot.forEach(async doc => {
         // doc.data() is never undefined for query doc snapshots
         await colorList.push({
           id: doc.data().id,
@@ -49,7 +49,13 @@ export async function Gacha(req: Request, res: Response) {
       });
     });
 
-  res.send(colorList);
+  const gachaList: Color[] = [];
+  for (let i = 0; i < 10; i++) {
+    const random = Math.floor(Math.random() * colorList.length + 1);
+    gachaList.push(colorList[random]);
+  }
+
+  res.send(gachaList);
 }
 
 export interface Color {

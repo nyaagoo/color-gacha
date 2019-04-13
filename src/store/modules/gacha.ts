@@ -115,6 +115,11 @@ class Gacha extends VuexModule {
         }
       }
     );
+
+    const colorList: Color[] = res.data.map((x: Color) => ({ ...x } as Color));
+
+    this.SET_GACHA_LIST(colorList);
+
     /*
     const gachaList: Color[] = [];
     for (let i = 0; i < 10; i++) {
