@@ -46,6 +46,7 @@ class Gacha extends VuexModule {
   // #region ACTION
   @Action({ rawError: true })
   public async fetchColorList() {
+    /*
     const config: AxiosRequestConfig = {
       headers: {
         "Content-Type": "application/json;charset=UTF-8"
@@ -67,6 +68,8 @@ class Gacha extends VuexModule {
 
     this.SET_COLOR_LIST(colorList);
     this.SET_GACHA_LIST(colorList);
+
+    */
     /*
     firebase
       .firestore()
