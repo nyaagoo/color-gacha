@@ -1,11 +1,11 @@
 export interface Color {
-  idRoot: number;
-  id: number;
+  idBase: number;
+  idEachGacha: number;
   name: string;
   ruby: string;
   code: string;
-  purchasability: number;
   rarity: Rarity;
+  purchasability: number;
 }
 
 export interface Gacha {
@@ -13,13 +13,13 @@ export interface Gacha {
   name: string;
   displayName: string;
   discription: string;
-  colorList: Color[];
+  colorList: Color;
 }
 
 export enum Rarity {
-  Common,
-  Uncommon,
-  Rare,
-  Epic,
-  Legendary
+  "Common",
+  "Uncommon",
+  "Rare",
+  "Epic",
+  "Legendary"
 }

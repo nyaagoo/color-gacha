@@ -27,8 +27,6 @@ app.get("/users/b", aa);
 
 app.get("/gacha", Gacha);
 export function validate(req: Request, res: Response, next: NextFunction) {
-  // eslint-disable-next-line no-console
-  console.log("Validation");
   next();
 }
 export async function Gacha(req: Request, res: Response) {
@@ -66,7 +64,7 @@ export interface Color {
 
 export async function aa(req: Request, res: Response) {
   corsHandler(req, res, () => {
-    const users = [{ id: 1, name: "ddaa" }];
+    const users = [{ id: 1, name: "hfuasdhiufas" }];
     // データを返却
     res.send(JSON.stringify(users));
   });

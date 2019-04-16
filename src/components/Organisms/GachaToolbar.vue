@@ -3,6 +3,7 @@
     v-toolbar(color='cyan' dark fixed app height=48)
       v-toolbar-title Application
       v-spacer
+      v-btn(@click="transitManage()") 管理画面へ
       v-btn(@click="logout()") ログアウト
 </template>
 <script lang="ts">
@@ -19,6 +20,9 @@ export default class GachaToolbar extends Vue {
     // FIXME: Storeの名前がダメ。Loginは機能名、user.login(), user.logout()とかにしたいが
     // userって名前は大きすぎる。 良い名前を考える 。
     login.logout();
+  }
+  transitManage() {
+    router.push("/manage");
   }
 }
 </script>

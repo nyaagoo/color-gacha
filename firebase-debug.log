@@ -1,0 +1,34 @@
+[debug] [2019-04-15T16:53:51.890Z] ----------------------------------------------------------------------
+[debug] [2019-04-15T16:53:51.893Z] Command:       C:\Program Files (x86)\Nodist\v-x64\11.9.0\node.exe C:\Program Files (x86)\Nodist\bin\node_modules\firebase-tools\lib\bin\firebase.js serve
+[debug] [2019-04-15T16:53:51.893Z] CLI Version:   6.5.0
+[debug] [2019-04-15T16:53:51.893Z] Platform:      win32
+[debug] [2019-04-15T16:53:51.893Z] Node Version:  v11.9.0
+[debug] [2019-04-15T16:53:51.895Z] Time:          Tue Apr 16 2019 01:53:51 GMT+0900 (GMT+09:00)
+[debug] [2019-04-15T16:53:51.895Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2019-04-15T16:53:51.903Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2019-04-15T16:53:51.903Z] > authorizing via signed-in user
+[debug] [2019-04-15T16:53:51.904Z] [iam] checking project color-gacha for permissions ["firebase.projects.get"]
+[debug] [2019-04-15T16:53:51.905Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/color-gacha:testIamPermissions  
+
+[debug] [2019-04-15T16:53:53.143Z] <<< HTTP RESPONSE 200
+[debug] [2019-04-15T16:53:53.144Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/color-gacha  
+ 
+[debug] [2019-04-15T16:53:53.872Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Serving from 'E:\product\git\vue\color-gacha'...
+[info] 
+[info] i  functions: Preparing to emulate functions.
+[debug] [2019-04-15T16:53:54.461Z] Fetching environment
+[debug] [2019-04-15T16:53:54.464Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/1021492259958:getServerAppConfig  
+ 
+[debug] [2019-04-15T16:53:54.464Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/1021492259958/clients/_:getWebAppConfig  
+ 
+[debug] [2019-04-15T16:53:54.838Z] <<< HTTP RESPONSE 200
+[debug] [2019-04-15T16:53:54.838Z] Starting @google-cloud/functions-emulator
+[debug] [2019-04-15T16:53:55.142Z] <<< HTTP RESPONSE 200
+[info] i  hosting: Serving hosting files from: dist
+[info] +  hosting: Local server: http://localhost:5000
+[debug] [2019-04-15T16:53:56.381Z] Parsing function triggers
+[info] +  functions: app: http://localhost:5001/color-gacha/us-central1/app
+[info] +  functions: sample: http://localhost:5001/color-gacha/us-central1/sample
