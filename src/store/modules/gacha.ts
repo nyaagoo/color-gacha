@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
 import {
   Mutation,
-  MutationAction,
   Action,
   VuexModule,
   getModule,
@@ -9,10 +8,7 @@ import {
 } from "vuex-module-decorators";
 import store from "@/store/store";
 import { login } from "@/store/index";
-
 import { Color } from "@/model/color.ts";
-
-import axios, { AxiosRequestConfig } from "axios";
 import firebase from "firebase";
 
 @Module({ dynamic: true, store, name: "gacha", namespaced: true })
@@ -46,62 +42,13 @@ class Gacha extends VuexModule {
   // #region ACTION
   @Action({ rawError: true })
   public async fetchColorList() {
-    /*
-    const config: AxiosRequestConfig = {
-      headers: {
-        "Content-Type": "application/json;charset=UTF-8"
-      }
-    };
-    console.log("Helloaaaaaaaaaaa");
-    const res = await axios.get(
-      "https://us-central1-color-gacha.cloudfunctions.net/app/gacha",
-      {
-        headers: {
-          "Content-Type": "application/json;charset=UTF-8"
-        }
-      }
-    );
-
-    console.log(res.data);
-
-    const colorList: Color[] = res.data.map((x: Color) => ({ ...x } as Color));
-
-    this.SET_COLOR_LIST(colorList);
-    this.SET_GACHA_LIST(colorList);
-
-    */
-    /*
-    firebase
+    const doc = await firebase
       .firestore()
-      .collection("colors")
-      .get()
-      .then(function(querySnapshot) {
-        querySnapshot.forEach(function(doc) {
-          // doc.data() is never undefined for query doc snapshots
-          colorList.push({
-            id: doc.data().id,
-            name: doc.data().name,
-            code: doc.data().code
-          });
-        });
-      });
+      .collection("gacha")
+      .doc("master")
+      .get();
+    const colorList = doc.data()!.colorList;
     this.SET_COLOR_LIST(colorList);
-
-    let hasColorList: number[] = [];
-    firebase
-      .firestore()
-      .collection("users")
-      .doc(login.uid)
-      .get()
-      .then(doc => {
-        if (doc.exists) {
-          console.log("Document data:", doc.data());
-        } else {
-          // doc.data() will be undefined in this case
-          console.log("No such document!");
-        }
-      });
-      */
   }
 
   @Action({ rawError: true })
@@ -110,48 +57,13 @@ class Gacha extends VuexModule {
       alert("ログイン失敗");
       return;
     }
-    const res = await axios.get(
-      "https://us-central1-color-gacha.cloudfunctions.net/app/gacha",
-      {
-        headers: {
-          "Content-Type": "application/json;charset=UTF-8"
-        }
-      }
-    );
 
-    const colorList: Color[] = res.data.map((x: Color) => ({ ...x } as Color));
-
-    this.SET_GACHA_LIST(colorList);
-
-    /*
     const gachaList: Color[] = [];
     for (let i = 0; i < 10; i++) {
-      const random = Math.floor(Math.random() * 11);
+      const random = Math.floor(Math.random() * this.colorList.length);
       gachaList.push(this.colorList[random]);
     }
     this.SET_GACHA_LIST(gachaList);
-
-    const db = firebase.firestore();
-    db.collection("users")
-      .doc(login.uid)
-      .set({
-        hasColor: gachaList.map(x => x.id)
-      });
-      */
-    /*
-    const db = firebase.firestore();
-    for (let i = 0; i < 10; i++) {
-      const id = gachaList[i].id.toString();
-      db.collection("users")
-        .doc(login.uid)
-        .collection("has-color")
-        .doc(id)
-        .set({
-          "has-color": true
-        });
-    }
-    */
   }
-  // #endregion
 }
 export const gacha = getModule(Gacha);

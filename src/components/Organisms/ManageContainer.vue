@@ -45,11 +45,11 @@ export default class ManageContainer extends Vue {
   }
   addField() {
     gachaModify.gachaMasterData.colorList.push({
-      idRoot: 2,
-      id: 2,
-      name: "Green",
-      ruby: "グリーン",
-      code: "#00ff00",
+      idRoot: 1,
+      id: 1,
+      name: "",
+      ruby: "",
+      code: "#",
       purchasability: 2,
       rarity: Rarity.Rare
     });
