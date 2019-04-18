@@ -4,11 +4,11 @@
       p GachaContainer
       p ユーザーID: {{loginUid}}
       v-btn(outline @click="gacha()") ガチャ！
+      v-btn(outline @click="reset()") リセット！
       .flex-container
         .color-box-wrapper(v-for="item in gachaList")
           .color-box(:style='{ "background-color": `${item.code}`}') 
           .color-name {{item.name}}
-    section.section-login
 </template>
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
@@ -45,6 +45,9 @@ export default class GachaContainer extends Vue {
     await gacha.gacha();
     await user.insertUserGacha(gacha.gachaList);
   }
+  async reset() {
+    await gacha.reset();
+  }
 }
 </script>
 <style lang="stylus" scoped>
@@ -54,10 +57,10 @@ export default class GachaContainer extends Vue {
 .section-intro
   padding 20px
   background-color #EFEFEF
-  height 900px
+  height 600px
 .section-login
   background-color #c6ddfd
-  height 900px
+  height 600px
 .flex-container
   display flex
   flex-wrap wrap

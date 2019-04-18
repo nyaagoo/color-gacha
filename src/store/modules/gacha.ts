@@ -7,7 +7,7 @@ import {
   Module
 } from "vuex-module-decorators";
 import store from "@/store/store";
-import { login } from "@/store/index";
+import { login, user } from "@/store/index";
 import { Color } from "@/model/color.ts";
 import firebase from "firebase";
 
@@ -18,7 +18,7 @@ class Gacha extends VuexModule {
 
   gachaList: Color[] = [];
 
-  hadColorList: number[] = [];
+  hadColorList: Color[] = [];
   // #endregion
 
   // #region MUTATION
@@ -33,7 +33,7 @@ class Gacha extends VuexModule {
   }
 
   @Mutation
-  public SET_HAS_COLOR_LIST(list: number[]) {
+  public SET_HAS_COLOR_LIST(list: Color[]) {
     this.hadColorList = list;
   }
 
@@ -57,13 +57,33 @@ class Gacha extends VuexModule {
       alert("ログイン失敗");
       return;
     }
-
     const gachaList: Color[] = [];
     for (let i = 0; i < 10; i++) {
       const random = Math.floor(Math.random() * this.colorList.length);
       gachaList.push(this.colorList[random]);
     }
     this.SET_GACHA_LIST(gachaList);
+  }
+
+  @Action({ rawError: true })
+  public async onSnapshot() {
+    await firebase
+      .firestore()
+      .collection("users")
+      .doc(login.uid)
+      .onSnapshot(doc => {
+        console.log(doc.data());
+        this.SET_HAS_COLOR_LIST(doc.data()!.colorList);
+      });
+  }
+
+  @Action({ rawError: true })
+  public async reset() {
+    await firebase
+      .firestore()
+      .collection("users")
+      .doc(login.uid)
+      .set({ colorList: [] });
   }
 }
 export const gacha = getModule(Gacha);

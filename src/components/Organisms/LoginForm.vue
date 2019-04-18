@@ -4,15 +4,18 @@
       v-container
         v-layout(row wrap)
           v-flex(xs12)
-            v-btn(color="primary" @click="loginAnonymously()") 匿名アカウントで始める！！
-            v-btn(color="primary" @click="loginGoogle()") Googleアカウントで始める！
+            .login-btn-container(v-if="!uid")
+              v-btn(color="primary" @click="loginAnonymously()") 匿名アカウントで始める！！
+              v-btn(color="primary" @click="loginGoogle()") Googleアカウントで始める！
+            .continue-btn-container(v-else)
+              v-btn(color="primary" @click="alreadyLogin()") 続きから始める
 
     
 </template>
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import router from "@/router";
-import { login } from "@/store/index";
+import { login, user } from "@/store/index";
 import firebase from "firebase";
 
 @Component({
@@ -20,7 +23,6 @@ import firebase from "firebase";
   components: {}
 })
 export default class LoginForm extends Vue {
-  user: firebase.User | null = null;
   name: string = "";
   email: string = "";
   valid: boolean = false;
@@ -32,11 +34,21 @@ export default class LoginForm extends Vue {
       return pattern.test(value) || "Invalid e-mail.";
     }
   };
+
+  created() {
+    user.getLocalStorageUid();
+  }
+  get uid() {
+    return user.uid;
+  }
   loginAnonymously() {
     login.loginAnonymously();
   }
   loginGoogle() {
     login.loginGoogle();
+  }
+  alreadyLogin() {
+    login.alreadyLogin();
   }
   logout() {
     firebase.auth().signOut();

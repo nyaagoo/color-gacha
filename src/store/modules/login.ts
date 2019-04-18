@@ -48,6 +48,7 @@ class Login extends VuexModule {
     firebase.auth().onAuthStateChanged(userData => {
       user.SET_UID(userData!.uid);
       this.SET_UID(userData!.uid);
+      localStorage.setItem("uid", userData!.uid);
       // eslint-disable-next-line no-console
       console.log(user!.uid);
     });
@@ -73,8 +74,7 @@ class Login extends VuexModule {
     firebase.auth().onAuthStateChanged(userData => {
       user.SET_UID(userData!.uid);
       this.SET_UID(userData!.uid);
-      // eslint-disable-next-line no-console
-      console.log(user!.uid);
+      localStorage.setItem("uid", userData!.uid);
     });
     try {
       await firebase
@@ -87,9 +87,17 @@ class Login extends VuexModule {
   }
 
   @Action({ rawError: true })
+  public async alreadyLogin() {
+    router.push("/gacha");
+    user.SET_UID(user.uid!);
+    this.SET_UID(user.uid!);
+  }
+
+  @Action({ rawError: true })
   public async logout() {
     try {
       await firebase.auth().signOut();
+      localStorage.clear();
       router.push("/");
     } catch (error) {
       alert("logoutに失敗しました。");
