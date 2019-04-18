@@ -8,6 +8,7 @@ import {
 import store from "@/store/store";
 import firebase from "firebase";
 import router from "@/router";
+import { user } from "@/store/index";
 
 @Module({ dynamic: true, store, name: "login", namespaced: true })
 class Login extends VuexModule {
@@ -44,12 +45,12 @@ class Login extends VuexModule {
 
   @Action({ rawError: true })
   public async loginAnonymously() {
-    firebase.auth().onAuthStateChanged(user => {
-      this.SET_UID(user!.uid);
+    firebase.auth().onAuthStateChanged(userData => {
+      user.SET_UID(userData!.uid);
+      this.SET_UID(userData!.uid);
       // eslint-disable-next-line no-console
       console.log(user!.uid);
     });
-
     try {
       await firebase
         .auth()
@@ -61,6 +62,24 @@ class Login extends VuexModule {
           console.log(error.message);
           alert("匿名ログインに失敗しました");
         });
+      router.push("/gacha");
+    } catch (error) {
+      alert("loginに失敗しました。");
+    }
+  }
+
+  @Action({ rawError: true })
+  public async loginGoogle() {
+    firebase.auth().onAuthStateChanged(userData => {
+      user.SET_UID(userData!.uid);
+      this.SET_UID(userData!.uid);
+      // eslint-disable-next-line no-console
+      console.log(user!.uid);
+    });
+    try {
+      await firebase
+        .auth()
+        .signInWithPopup(new firebase.auth.GoogleAuthProvider());
       router.push("/gacha");
     } catch (error) {
       alert("loginに失敗しました。");

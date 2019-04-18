@@ -4,7 +4,8 @@
       v-container
         v-layout(row wrap)
           v-flex(xs12)
-            v-btn(color="primary" @click="login()") 始める！！
+            v-btn(color="primary" @click="loginAnonymously()") 匿名アカウントで始める！！
+            v-btn(color="primary" @click="loginGoogle()") Googleアカウントで始める！
 
     
 </template>
@@ -31,8 +32,11 @@ export default class LoginForm extends Vue {
       return pattern.test(value) || "Invalid e-mail.";
     }
   };
-  login() {
+  loginAnonymously() {
     login.loginAnonymously();
+  }
+  loginGoogle() {
+    login.loginGoogle();
   }
   logout() {
     firebase.auth().signOut();

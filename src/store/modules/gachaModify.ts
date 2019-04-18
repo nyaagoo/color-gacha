@@ -53,14 +53,20 @@ class GachaModify extends VuexModule {
   @Action({ rawError: true })
   public async UpdateColorList(colorList: Color[]) {
     const gachaName = "master";
+    const color: Color[] = colorList.map(color => ({
+      ...color,
+      id: Number(color.id),
+      idRoot: Number(color.idRoot),
+      purchasability: Number(color.purchasability),
+      rarity: Number(color.rarity)
+    }));
 
     const doc = await firebase
       .firestore()
       .collection("gacha")
       .doc(gachaName)
-      .set({ ...this.gachaMasterData, colorList: colorList });
+      .set({ ...this.gachaMasterData, colorList: color });
   }
-
   // #endregion
 }
 export const gachaModify = getModule(GachaModify);

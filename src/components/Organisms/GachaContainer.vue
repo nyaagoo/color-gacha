@@ -14,7 +14,7 @@
 import { Component, Vue } from "vue-property-decorator";
 import router from "@/router";
 import { Color } from "@/model/color.ts";
-import { gacha, login } from "@/store/index";
+import { gacha, login, user } from "@/store/index";
 @Component({
   name: "gacha-container",
   components: {}
@@ -32,7 +32,6 @@ export default class GachaContainer extends Vue {
   }
 
   get hasColorList() {
-    alert(gacha.hadColorList);
     return gacha.hadColorList;
   }
   get loginUid() {
@@ -42,8 +41,9 @@ export default class GachaContainer extends Vue {
   created() {
     gacha.fetchColorList();
   }
-  gacha() {
-    gacha.gacha();
+  async gacha() {
+    await gacha.gacha();
+    await user.insertUserGacha(gacha.gachaList);
   }
 }
 </script>
