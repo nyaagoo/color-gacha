@@ -35,7 +35,7 @@ export default class GachaContainer extends Vue {
     return gacha.hadColorList;
   }
   get loginUid() {
-    return login.uid;
+    return user.GET_UID;
   }
 
   created() {

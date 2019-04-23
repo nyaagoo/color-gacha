@@ -1,6 +1,5 @@
 import {
   Mutation,
-  MutationAction,
   Action,
   VuexModule,
   getModule,
@@ -10,17 +9,23 @@ import store from "@/store/store";
 import firebase, { firestore } from "firebase";
 import { Color } from "@/model/color";
 import { login } from "@/store/index";
+import router from "@/router";
 
 @Module({ dynamic: true, store, name: "user", namespaced: true })
 class User extends VuexModule {
   // #region STATE
-  uid: string | undefined = undefined;
+  private uid: string | undefined = undefined;
 
+  // Getterを作るメリット：データを加工して渡す事ができる
+  // デメリット:getterを書くのが面倒くさい
+  get GET_UID() {
+    return this.uid;
+  }
   // #endregion
 
   // #region MUTATION
   @Mutation // counter
-  public SET_UID(uid: string) {
+  public SET_UID(uid: string | undefined) {
     this.uid = uid;
   }
 
@@ -28,15 +33,20 @@ class User extends VuexModule {
 
   // #region ACTION
   @Action({ rawError: true })
-  public async insertUserGacha(gachaList: Color[]) {
-    // eslint-disable-next-line no-console
-    console.log(gachaList);
+  public async ReadLocalStorageUID() {
+    const uid = localStorage.getItem("uid");
+    if (uid === null) {
+      this.SET_UID(undefined);
+    }
+    this.SET_UID(uid!);
+  }
 
+  @Action({ rawError: true })
+  public async insertUserGacha(gachaList: Color[]) {
     const dbRef = firebase
       .firestore()
       .collection("users")
-      .doc(login.uid);
-
+      .doc(user.uid);
     await dbRef.get().then(async docSnapshot => {
       if (docSnapshot.exists) {
         await dbRef.update({
@@ -74,18 +84,10 @@ class User extends VuexModule {
     await firebase
       .firestore()
       .collection("users")
-      .doc(login.uid);
+      .doc(user.uid);
 
     // Firebaseの仕様上まとめられない
   }
-
-  @Action({ rawError: true })
-  public getLocalStorageUid() {
-    const uid = localStorage.getItem("uid");
-    if (uid !== null) this.uid = uid;
-    else this.uid = undefined;
-  }
-
   // #endregion
 }
 export const user = getModule(User);

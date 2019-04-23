@@ -53,7 +53,7 @@ class Gacha extends VuexModule {
 
   @Action({ rawError: true })
   public async gacha() {
-    if (!login.uid) {
+    if (!user.GET_UID) {
       alert("ログイン失敗");
       return;
     }
@@ -70,7 +70,7 @@ class Gacha extends VuexModule {
     await firebase
       .firestore()
       .collection("users")
-      .doc(login.uid)
+      .doc(user.GET_UID)
       .onSnapshot(doc => {
         console.log(doc.data());
         this.SET_HAS_COLOR_LIST(doc.data()!.colorList);
@@ -82,7 +82,7 @@ class Gacha extends VuexModule {
     await firebase
       .firestore()
       .collection("users")
-      .doc(login.uid)
+      .doc(user.GET_UID)
       .set({ colorList: [] });
   }
 }

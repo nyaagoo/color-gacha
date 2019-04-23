@@ -12,6 +12,7 @@ import router from "@/router";
 import GachaContainer from "@/components/Organisms/GachaContainer.vue";
 import GachaToolbar from "@/components/Organisms/GachaToolbar.vue";
 import GachaCollection from "@/components/Organisms/GachaCollection.vue";
+import { user } from "@/store/index";
 
 @Component({
   name: "gacha-template",
@@ -21,7 +22,11 @@ import GachaCollection from "@/components/Organisms/GachaCollection.vue";
     "gacha-collection": GachaCollection
   }
 })
-export default class GachaTemplate extends Vue {}
+export default class GachaTemplate extends Vue {
+  created() {
+    user.ReadLocalStorageUID();
+  }
+}
 </script>
 <style lang="stylus" scoped>
 .gacha-template

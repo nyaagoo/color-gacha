@@ -9,8 +9,6 @@
               v-btn(color="primary" @click="loginGoogle()") Googleアカウントで始める！
             .continue-btn-container(v-else)
               v-btn(color="primary" @click="alreadyLogin()") 続きから始める
-
-    
 </template>
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
@@ -36,10 +34,10 @@ export default class LoginForm extends Vue {
   };
 
   created() {
-    user.getLocalStorageUid();
+    user.ReadLocalStorageUID();
   }
-  get uid() {
-    return user.uid;
+  get uid(): string | undefined {
+    return user.GET_UID;
   }
   loginAnonymously() {
     login.loginAnonymously();

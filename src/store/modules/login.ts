@@ -13,44 +13,17 @@ import { user } from "@/store/index";
 @Module({ dynamic: true, store, name: "login", namespaced: true })
 class Login extends VuexModule {
   // #region STATE
-  user: firebase.User | undefined = undefined;
-  uid: string = "";
-
   // #endregion
 
   // #region MUTATION
-  @Mutation // counter
-  public SET_USER(user: firebase.User | undefined) {
-    this.user = user;
-  }
-  @Mutation // counter
-  public SET_UID(uid: string) {
-    this.uid = uid;
-  }
-
   // #endregion
 
   // #region ACTION
   @Action({ rawError: true })
-  public login() {
-    firebase
-      .auth()
-      .signInAnonymously()
-      .catch(function(error) {
-        // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
-      });
-  }
-
-  @Action({ rawError: true })
   public async loginAnonymously() {
     firebase.auth().onAuthStateChanged(userData => {
       user.SET_UID(userData!.uid);
-      this.SET_UID(userData!.uid);
       localStorage.setItem("uid", userData!.uid);
-      // eslint-disable-next-line no-console
-      console.log(user!.uid);
     });
     try {
       await firebase
@@ -68,12 +41,10 @@ class Login extends VuexModule {
       alert("loginに失敗しました。");
     }
   }
-
   @Action({ rawError: true })
   public async loginGoogle() {
     firebase.auth().onAuthStateChanged(userData => {
       user.SET_UID(userData!.uid);
-      this.SET_UID(userData!.uid);
       localStorage.setItem("uid", userData!.uid);
     });
     try {
@@ -89,8 +60,7 @@ class Login extends VuexModule {
   @Action({ rawError: true })
   public async alreadyLogin() {
     router.push("/gacha");
-    user.SET_UID(user.uid!);
-    this.SET_UID(user.uid!);
+    user.SET_UID(user.GET_UID);
   }
 
   @Action({ rawError: true })
