@@ -7,16 +7,16 @@
       v-btn(outline @click="reset()") リセット！
       v-btn(outline @click="test1()") test1
       v-btn(outline @click="test2()") test2
-      .flex-container
-        .color-box-wrapper(v-for="(item, index) in gachaList")
+      transition-group.flex-container(name="list" tag="p")
+        .color-box-wrapper(v-for="(item, index) in displayCardList" :key="item")
           .color-box(:class="`color-box${index}`" :style='{ "background-color": `${item.backgroundColor}`, "border-color": `${item.borderColor}` }')
           .color-name {{item.name}}
-      
+        
 </template>
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import router from "@/router";
-import { Color } from "@/model/color";
+import { Color, ColorExtendsRarity } from "@/model/color";
 import { raritySetting } from "@/model/static";
 import { gacha, login, user } from "@/store/index";
 import { TweenMax, TimelineMax } from "gsap";
@@ -38,19 +38,27 @@ export default class GachaContainer extends Vue {
   get gachaList(): Color[] {
     return gacha.gachaList;
   }
+  get displayCardList(): ColorExtendsRarity[] {
+    return gacha.displayCardList;
+  }
+  set displayCardList(list: ColorExtendsRarity[]) {
+    gacha.SET_DISPLAY_CARD_LIST(list);
+  }
   get hasColorList() {
     return gacha.hadColorList;
   }
   async gacha() {
     await gacha.gacha();
+    this.displayCardList = [];
     const timeLine = new TimelineMax();
 
     /*
     await timeLine.to(".color-box-wrapper .color-box", 0.5, {
-      rotationY: "0deg"
+      rotationY: "0deg",
       backgroundColor: element.code
     });
-*/
+    */
+    /*
     gacha.gachaList.forEach((element, index) => {
       timeLine.to(`.color-box${index}`, 0.1, {
         rotationY: "0deg",
@@ -68,6 +76,8 @@ export default class GachaContainer extends Vue {
         0
       );
     });
+    */
+
     await user.insertUserGacha(gacha.gachaList);
   }
   async reset() {
@@ -82,6 +92,14 @@ export default class GachaContainer extends Vue {
 }
 </script>
 <style lang="stylus" scoped>
+.list-move
+  transition all .4s
+.list-enter-active, .list-leave-active {
+  transition: all .4s;
+}
+.list-enter, .list-leave-to
+  opacity 0
+  transform translateY(-80px)
 .gacha-container
   width 1000px
   margin auto
@@ -95,7 +113,7 @@ export default class GachaContainer extends Vue {
 .flex-container
   display flex
   flex-wrap wrap
-  justify-content space-between
+  justify-content fle
 .color-box-wrapper
   margin 8px
   height 100px

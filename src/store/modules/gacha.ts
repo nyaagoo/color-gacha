@@ -19,6 +19,8 @@ class Gacha extends VuexModule {
 
   gachaList: ColorExtendsRarity[] = [];
 
+  displayCardList: ColorExtendsRarity[] = [];
+
   hadColorList: Color[] = [];
   // #endregion
 
@@ -31,6 +33,16 @@ class Gacha extends VuexModule {
   @Mutation
   public SET_GACHA_LIST(list: ColorExtendsRarity[]) {
     this.gachaList = list;
+  }
+
+  @Mutation
+  public SET_DISPLAY_CARD_LIST(list: ColorExtendsRarity[]) {
+    this.displayCardList = list;
+  }
+
+  @Mutation
+  public UNSHIFT_DISPLAY_CARD_LIST(item: ColorExtendsRarity) {
+    this.displayCardList.unshift(item);
   }
 
   @Mutation
@@ -61,14 +73,21 @@ class Gacha extends VuexModule {
     }
     const colorExtendsRarity: ColorExtendsRarity[] = gachaList.map(x => {
       const colors = raritySetting.find(r => r.rarity === x.rarity);
-
       return {
         ...x,
         backgroundColor: colors!.backgroundColor,
         borderColor: colors!.borderColor
       } as ColorExtendsRarity;
     });
+
     this.SET_GACHA_LIST(colorExtendsRarity);
+
+    let intervalId: any;
+    intervalId = setInterval(() => {
+      const color = colorExtendsRarity.shift();
+      if (color === undefined) clearInterval(intervalId);
+      gacha.UNSHIFT_DISPLAY_CARD_LIST(color!);
+    }, 500);
   }
 
   @Action({ rawError: true })

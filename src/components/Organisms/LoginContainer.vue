@@ -1,9 +1,7 @@
 <template lang="pug">
   .login-container
     section.section-intro
-      p ガチャで色をゲットして
-      p あつめて
-      p ながめよう！！
+      login-title-logo
     section.section-login
       login-form
 </template>
@@ -11,11 +9,13 @@
 import { Component, Vue } from "vue-property-decorator";
 import router from "@/router";
 import LoginForm from "@/components/Organisms/LoginForm.vue";
+import LoginTitleLogo from "@/components/Molecules/LoginTitleLogo.vue";
 
 @Component({
   name: "login-container",
   components: {
-    "login-form": LoginForm
+    "login-form": LoginForm,
+    "login-title-logo": LoginTitleLogo
   }
 })
 export default class LoginContainer extends Vue {}
@@ -26,10 +26,7 @@ export default class LoginContainer extends Vue {}
   margin auto
 .section-intro
   padding 20px
-  background-color #f8ff83
-  height 400px
-  p
-    font-size 40px
+  height 200px
 .section-login
   background-color #c6ddfd
   height 900px
