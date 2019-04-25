@@ -37,7 +37,7 @@ export default class LoginForm extends Vue {
     user.ReadLocalStorageUID();
   }
   get uid(): string | undefined {
-    return user.GET_UID;
+    return user.GET_UID_LOGIN;
   }
   loginAnonymously() {
     login.loginAnonymously();

@@ -7,6 +7,10 @@ export interface Color {
   purchasability: number;
   rarity: Rarity;
 }
+export interface ColorExtendsRarity extends Color {
+  backgroundColor: string;
+  borderColor: string;
+}
 
 export interface Gacha {
   id: number;
@@ -17,9 +21,14 @@ export interface Gacha {
 }
 
 export enum Rarity {
-  Common,
+  Common = 1,
   Uncommon,
   Rare,
   Epic,
   Legendary
+}
+export interface RaritySetting {
+  rarity: Rarity;
+  backgroundColor: string;
+  borderColor: string;
 }

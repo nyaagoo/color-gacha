@@ -8,7 +8,8 @@ import {
 } from "vuex-module-decorators";
 import store from "@/store/store";
 import { login, user } from "@/store/index";
-import { Color } from "@/model/color.ts";
+import { Color, ColorExtendsRarity } from "@/model/color";
+import { raritySetting } from "@/model/static";
 import firebase from "firebase";
 
 @Module({ dynamic: true, store, name: "gacha", namespaced: true })
@@ -16,7 +17,7 @@ class Gacha extends VuexModule {
   // #region STATE
   colorList: Color[] = [];
 
-  gachaList: Color[] = [];
+  gachaList: ColorExtendsRarity[] = [];
 
   hadColorList: Color[] = [];
   // #endregion
@@ -28,7 +29,7 @@ class Gacha extends VuexModule {
   }
 
   @Mutation
-  public SET_GACHA_LIST(list: Color[]) {
+  public SET_GACHA_LIST(list: ColorExtendsRarity[]) {
     this.gachaList = list;
   }
 
@@ -53,16 +54,21 @@ class Gacha extends VuexModule {
 
   @Action({ rawError: true })
   public async gacha() {
-    if (!user.GET_UID) {
-      alert("ログイン失敗");
-      return;
-    }
     const gachaList: Color[] = [];
     for (let i = 0; i < 10; i++) {
       const random = Math.floor(Math.random() * this.colorList.length);
       gachaList.push(this.colorList[random]);
     }
-    this.SET_GACHA_LIST(gachaList);
+    const colorExtendsRarity: ColorExtendsRarity[] = gachaList.map(x => {
+      const colors = raritySetting.find(r => r.rarity === x.rarity);
+
+      return {
+        ...x,
+        backgroundColor: colors!.backgroundColor,
+        borderColor: colors!.borderColor
+      } as ColorExtendsRarity;
+    });
+    this.SET_GACHA_LIST(colorExtendsRarity);
   }
 
   @Action({ rawError: true })

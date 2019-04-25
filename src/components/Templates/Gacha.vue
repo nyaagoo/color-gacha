@@ -3,8 +3,8 @@
     gacha-container
     .login-conitaner
       gacha-toolbar
-    .login-collection
-      gacha-collection
+    //.login-collection
+    //  gacha-collection
 </template>
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";

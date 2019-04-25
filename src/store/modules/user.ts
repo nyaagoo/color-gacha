@@ -8,7 +8,6 @@ import {
 import store from "@/store/store";
 import firebase, { firestore } from "firebase";
 import { Color } from "@/model/color";
-import { login } from "@/store/index";
 import router from "@/router";
 
 @Module({ dynamic: true, store, name: "user", namespaced: true })
@@ -18,7 +17,15 @@ class User extends VuexModule {
 
   // Getterを作るメリット：データを加工して渡す事ができる
   // デメリット:getterを書くのが面倒くさい
-  get GET_UID() {
+  get GET_UID(): string {
+    if (!this.uid) {
+      alert("ログイン情報の取得に失敗しました");
+      router.push("/");
+    }
+    return this.uid as string;
+  }
+
+  get GET_UID_LOGIN(): string | undefined {
     return this.uid;
   }
   // #endregion
@@ -80,12 +87,6 @@ class User extends VuexModule {
         });
       }
     });
-
-    await firebase
-      .firestore()
-      .collection("users")
-      .doc(user.uid);
-
     // Firebaseの仕様上まとめられない
   }
   // #endregion
