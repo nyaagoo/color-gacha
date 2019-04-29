@@ -7,6 +7,7 @@
       v-btn(outline @click="reset()") リセット！
       v-btn(outline @click="test1()") test1
       v-btn(outline @click="test2()") test2
+      // card-on-the-back(:hoge="`sass`")
       transition-group.flex-container(name="list" tag="p")
         .color-box-wrapper(v-for="(item, index) in displayCardList" :key="item")
           .color-box(:class="`color-box${index}`" :style='{ "background-color": `${item.backgroundColor}`, "border-color": `${item.borderColor}` }')
@@ -20,9 +21,12 @@ import { Color, ColorExtendsRarity } from "@/model/color";
 import { raritySetting } from "@/model/static";
 import { gacha, login, user } from "@/store/index";
 import { TweenMax, TimelineMax } from "gsap";
+import CardOnTheBack from "@/components/Molecules/CardOnTheBack.vue";
 @Component({
   name: "gacha-container",
-  components: {}
+  components: {
+    "card-on-the-back": CardOnTheBack
+  }
 })
 export default class GachaContainer extends Vue {
   created() {
@@ -92,6 +96,9 @@ export default class GachaContainer extends Vue {
 }
 </script>
 <style lang="stylus" scoped>
+card-on-the-back
+  width 200px
+  height 200px
 .list-move
   transition all .4s
 .list-enter-active, .list-leave-active {
@@ -113,7 +120,7 @@ export default class GachaContainer extends Vue {
 .flex-container
   display flex
   flex-wrap wrap
-  justify-content fle
+  justify-content flex-start
 .color-box-wrapper
   margin 8px
   height 100px
