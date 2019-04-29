@@ -11,6 +11,7 @@ import { login, user } from "@/store/index";
 import { Color, ColorExtendsRarity } from "@/model/color";
 import { raritySetting } from "@/model/static";
 import firebase from "firebase";
+import { TweenMax, TimelineMax } from "gsap";
 
 @Module({ dynamic: true, store, name: "gacha", namespaced: true })
 class Gacha extends VuexModule {
@@ -22,6 +23,8 @@ class Gacha extends VuexModule {
   displayCardList: ColorExtendsRarity[] = [];
 
   hadColorList: Color[] = [];
+
+  animationPulse: any = undefined;
   // #endregion
 
   // #region MUTATION
@@ -48,6 +51,11 @@ class Gacha extends VuexModule {
   @Mutation
   public SET_HAS_COLOR_LIST(list: Color[]) {
     this.hadColorList = list;
+  }
+
+  @Mutation
+  public SET_ANIMATION_PULSE(item: any) {
+    this.animationPulse = item;
   }
 
   // #endregion
@@ -81,13 +89,64 @@ class Gacha extends VuexModule {
     });
 
     this.SET_GACHA_LIST(colorExtendsRarity);
-
     let intervalId: any;
-    intervalId = setInterval(() => {
+    intervalId = setInterval(async () => {
       const color = colorExtendsRarity.shift();
-      if (color === undefined) clearInterval(intervalId);
+      if (color === undefined) {
+        clearInterval(intervalId);
+        await this.animationRarity();
+      }
       gacha.UNSHIFT_DISPLAY_CARD_LIST(color!);
     }, 500);
+  }
+
+  @Action({ rawError: true })
+  public async animationRarity() {
+    this.displayCardList.forEach(async (item, index) => {
+      if (item.rarity > 2) {
+        const pluse = TweenMax.fromTo(
+          `.color-box${index}`,
+          1.5,
+          {
+            boxShadow: `0 0 0 0px ${await this.hexToRgbA({
+              hex: `${item.borderColor}`,
+              alpha: "0.7"
+            })}`
+          },
+          {
+            boxShadow: `0 0 0 20px ${await this.hexToRgbA({
+              hex: `${item.borderColor}`,
+              alpha: "0"
+            })}`,
+            repeat: -1
+          }
+        );
+        this.SET_ANIMATION_PULSE(pluse);
+      }
+    });
+  }
+
+  @Action({ rawError: true })
+  public async animationKill() {
+    TweenMax.killAll(true, true, false, false);
+  }
+
+  @Action({ rawError: true })
+  public async hexToRgbA(data: { hex: string; alpha: string }) {
+    let c: any;
+    if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(data.hex)) {
+      c = data.hex.substring(1).split("");
+      if (c.length == 3) {
+        c = [c[0], c[0], c[1], c[1], c[2], c[2]];
+      }
+      c = "0x" + c.join("");
+      return (
+        "rgba(" +
+        [(c >> 16) & 255, (c >> 8) & 255, c & 255].join(",") +
+        `,${data.alpha})`
+      );
+    }
+    throw new Error("Bad Hex");
   }
 
   @Action({ rawError: true })

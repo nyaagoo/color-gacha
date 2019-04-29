@@ -7,12 +7,10 @@
       v-btn(outline @click="reset()") リセット！
       v-btn(outline @click="test1()") test1
       v-btn(outline @click="test2()") test2
-      // card-on-the-back(:hoge="`sass`")
       transition-group.flex-container(name="list" tag="p")
-        .color-box-wrapper(v-for="(item, index) in displayCardList" :key="item")
-          .color-box(:class="`color-box${index}`" :style='{ "background-color": `${item.backgroundColor}`, "border-color": `${item.borderColor}` }')
-          .color-name {{item.name}}
-        
+        .color-box-wrapper(v-for="(item, index) in displayCardList" :key="`${item.idRoot}`")
+          .color-box(:class="`color-box${index}`" :style='{ "background-image": `${background(item.backgroundColor)}`,"border-color": `${item.borderColor}`}')
+          .color-name {{item.ruby}}
 </template>
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
@@ -22,6 +20,7 @@ import { raritySetting } from "@/model/static";
 import { gacha, login, user } from "@/store/index";
 import { TweenMax, TimelineMax } from "gsap";
 import CardOnTheBack from "@/components/Molecules/CardOnTheBack.vue";
+import "css-doodle";
 @Component({
   name: "gacha-container",
   components: {
@@ -50,6 +49,11 @@ export default class GachaContainer extends Vue {
   }
   get hasColorList() {
     return gacha.hadColorList;
+  }
+
+  background(hex: string) {
+    const subhex = hex.substring(1, 7);
+    return `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='%23${subhex}' fill-opacity='0.4'%3E%3Cpath fill-rule='evenodd' d='M0 0h40v40H0V0zm40 40h40v40H40V40zm0-40h2l-2 2V0zm0 4l4-4h2l-6 6V4zm0 4l8-8h2L40 10V8zm0 4L52 0h2L40 14v-2zm0 4L56 0h2L40 18v-2zm0 4L60 0h2L40 22v-2zm0 4L64 0h2L40 26v-2zm0 4L68 0h2L40 30v-2zm0 4L72 0h2L40 34v-2zm0 4L76 0h2L40 38v-2zm0 4L80 0v2L42 40h-2zm4 0L80 4v2L46 40h-2zm4 0L80 8v2L50 40h-2zm4 0l28-28v2L54 40h-2zm4 0l24-24v2L58 40h-2zm4 0l20-20v2L62 40h-2zm4 0l16-16v2L66 40h-2zm4 0l12-12v2L70 40h-2zm4 0l8-8v2l-6 6h-2zm4 0l4-4v2l-2 2h-2z'/%3E%3C/g%3E%3C/svg%3E")`;
   }
   async gacha() {
     await gacha.gacha();
@@ -88,7 +92,9 @@ export default class GachaContainer extends Vue {
     await gacha.reset();
   }
 
-  test1(color: string) {}
+  test1(color: string) {
+    gacha.animationKill();
+  }
 
   test2() {
     TweenMax.to(".color-box", 1, { x: 200 });
@@ -100,13 +106,16 @@ card-on-the-back
   width 200px
   height 200px
 .list-move
-  transition all .4s
+  transition all .5s
 .list-enter-active, .list-leave-active {
-  transition: all .4s;
+  transition: all .5s;
 }
-.list-enter, .list-leave-to
+.list-enter
   opacity 0
   transform translateY(-80px)
+.list-leave-to
+  opacity 0
+  transform translateY(80px)
 .gacha-container
   width 1000px
   margin auto
@@ -120,17 +129,17 @@ card-on-the-back
 .flex-container
   display flex
   flex-wrap wrap
-  justify-content flex-start
+  justify-content center
 .color-box-wrapper
   margin 8px
   height 100px
   width 160px
 .color-box
-  height 80px
+  height 84px
   width 100%
   border 4px solid #458A07
   border-radius 8px
-  background-color #acacac
+  background-repeat repeat
 .color-box-main
   height 80px
   width 160px
