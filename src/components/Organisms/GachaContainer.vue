@@ -58,35 +58,13 @@ export default class GachaContainer extends Vue {
   async gacha() {
     await gacha.gacha();
     this.displayCardList = [];
-    const timeLine = new TimelineMax();
-
     /*
     await timeLine.to(".color-box-wrapper .color-box", 0.5, {
       rotationY: "0deg",
       backgroundColor: element.code
     });
     */
-    /*
-    gacha.gachaList.forEach((element, index) => {
-      timeLine.to(`.color-box${index}`, 0.1, {
-        rotationY: "0deg",
-        backgroundColor: element.backgroundColor
-      });
-    });
-    gacha.gachaList.forEach((element, index) => {
-      timeLine.staggerTo(
-        `.color-box${index}`,
-        0.5,
-        {
-          rotationY: "180deg",
-          backgroundColor: element.code
-        },
-        0
-      );
-    });
-    */
-
-    await user.insertUserGacha(gacha.gachaList);
+    // await user.insertUserGacha(gacha.gachaList);
   }
   async reset() {
     await gacha.reset();
@@ -97,7 +75,22 @@ export default class GachaContainer extends Vue {
   }
 
   test2() {
-    TweenMax.to(".color-box", 1, { x: 200 });
+    const timeLine = new TimelineMax();
+    gacha.animationKill();
+
+    this.displayCardList.forEach((card, index) => {
+      timeLine
+        .to(`.color-box${index}`, 0.4, {
+          rotationY: "180deg",
+          backgroundColor: card.code,
+          backgroundImage: "none",
+          borderColor: "none",
+          scale: 1.2
+        })
+        .to(`.color-box${index}`, 0.2, {
+          scale: 1.0
+        });
+    });
   }
 }
 </script>
@@ -132,7 +125,7 @@ card-on-the-back
   justify-content center
 .color-box-wrapper
   margin 8px
-  height 100px
+  height 120px
   width 160px
 .color-box
   height 84px

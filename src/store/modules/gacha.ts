@@ -95,6 +95,7 @@ class Gacha extends VuexModule {
       if (color === undefined) {
         clearInterval(intervalId);
         await this.animationRarity();
+        return;
       }
       gacha.UNSHIFT_DISPLAY_CARD_LIST(color!);
     }, 500);
