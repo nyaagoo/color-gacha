@@ -7,17 +7,19 @@
       v-btn(outline @click="reset()") リセット！
       v-btn(outline @click="test1()") test1
       v-btn(outline @click="test2()") test2
+      v-btn(outline @click="test3()") test3
       transition-group.flex-container(name="list" tag="p")
         .color-box-wrapper(v-for="(item, index) in displayCardList" :key="`${item.idRoot}`")
-          .color-box(:class="`color-box${index}`" :style='{ "background-image": `${background(item.backgroundColor)}`,"border-color": `${item.borderColor}`}')
-          .color-name {{item.ruby}}
+          .color-box(:class="`color-box${index}`" :style='{ "background-image": `${background(item.backgroundColor)}`,"border-color": `${item.borderColor}`}' @click="openDialogColorDetail(item)")
+          .color-name(:style='{ "border-color": `${item.backgroundColor}`}')
+            b {{item.ruby}}
 </template>
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import router from "@/router";
 import { Color, ColorExtendsRarity } from "@/model/color";
 import { raritySetting } from "@/model/static";
-import { gacha, login, user } from "@/store/index";
+import { gacha, login, user, dialog, colorDetail } from "@/store/index";
 import { TweenMax, TimelineMax } from "gsap";
 import CardOnTheBack from "@/components/Molecules/CardOnTheBack.vue";
 import "css-doodle";
@@ -50,6 +52,9 @@ export default class GachaContainer extends Vue {
   get hasColorList() {
     return gacha.hadColorList;
   }
+  openDialogColorDetail(color: ColorExtendsRarity) {
+    colorDetail.OpenDialog(color);
+  }
 
   background(hex: string) {
     const subhex = hex.substring(1, 7);
@@ -58,13 +63,6 @@ export default class GachaContainer extends Vue {
   async gacha() {
     await gacha.gacha();
     this.displayCardList = [];
-    /*
-    await timeLine.to(".color-box-wrapper .color-box", 0.5, {
-      rotationY: "0deg",
-      backgroundColor: element.code
-    });
-    */
-    // await user.insertUserGacha(gacha.gachaList);
   }
   async reset() {
     await gacha.reset();
@@ -91,6 +89,9 @@ export default class GachaContainer extends Vue {
           scale: 1.0
         });
     });
+  }
+  test3() {
+    dialog.SET_IS_VISIBLE_COLOR_DETAIL(true);
   }
 }
 </script>
@@ -149,6 +150,7 @@ card-on-the-back
   margin-top 4px
   border 2px solid #AAAAAA
   border-radius 20px
+  color #232323
 </style>
 
 <style scoped>
