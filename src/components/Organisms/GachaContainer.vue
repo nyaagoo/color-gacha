@@ -12,7 +12,7 @@
         .color-box-wrapper(v-for="(item, index) in displayCardList" :key="`${item.idRoot}`")
           .color-box(:class="`color-box${index}`" :style='{ "background-image": `${background(item.backgroundColor)}`,"border-color": `${item.borderColor}`}' @click="openDialogColorDetail(item)")
           .color-name(:style='{ "border-color": `${item.backgroundColor}`}')
-            b {{item.ruby}}
+            b {{ item.ruby }}
 </template>
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";

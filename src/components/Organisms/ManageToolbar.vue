@@ -3,15 +3,17 @@
     v-toolbar(color='cyan' dark fixed app height=48)
       v-toolbar-title 管理ページ
       v-spacer
-      v-btn(@click="transitGacha()") ガチャページへ
-      v-btn(@click="logout()") ログアウト
+      menu-transit-buttons
 </template>
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import router from "@/router";
+import MenuTransitButtons from "@/components/Molecules/MenuTransitButtons.vue";
 @Component({
   name: "manage-toolbar",
-  components: {}
+  components: {
+    "menu-transit-buttons": MenuTransitButtons
+  }
 })
 export default class ManageToolbar extends Vue {
   transitGacha() {

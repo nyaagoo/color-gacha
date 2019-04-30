@@ -1,5 +1,5 @@
 <template lang="pug">
-  .gacha-toolbar
+  .collection-toolbar
     v-toolbar(color='cyan' dark fixed app height=48)
       v-toolbar-title Application2
       v-spacer
@@ -12,11 +12,11 @@ import { login } from "@/store/index.ts";
 import MenuTransitButtons from "@/components/Molecules/MenuTransitButtons.vue";
 
 @Component({
-  name: "gacha-toolbar",
+  name: "collection-toolbar",
   components: {
     "menu-transit-buttons": MenuTransitButtons
   }
 })
-export default class GachaToolbar extends Vue {}
+export default class CollectionToolbar extends Vue {}
 </script>
 <style lang="stylus" scoped></style>
