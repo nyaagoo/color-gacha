@@ -1,14 +1,16 @@
 <template lang="pug">
   .collection-container
     section.collection-wrapper
-      .collection-item(v-for="color in colorCollection" :key="color.idRoot" :style="{'background-color':color.code}")
-        span {{color.name}}
+      .collection-item(v-for="color in colorCollection" :key="color.idRoot" :style="{'background-color':convert(color.code)}")
+        span(:style="{'color': selectTextColor(color.code)}")
+         b {{color.name}}
       
 </template>
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import router from "@/router";
 import { gacha } from "@/store/index.ts";
+import { convertHexToHsl, selectTextColor } from "@/util/colorUtil";
 
 @Component({
   name: "collection-container",
@@ -18,6 +20,13 @@ export default class CollectionContainer extends Vue {
   get colorCollection() {
     //TODO: すべてのカラーリストから取ってきている。個人の所有しているカラーリストを取得する
     return gacha.colorList;
+  }
+  convert(hex: string): string {
+    // eslint-disable-next-line no-console
+    return convertHexToHsl(hex);
+  }
+  selectTextColor(hex: string): string {
+    return selectTextColor(hex);
   }
 }
 </script>
