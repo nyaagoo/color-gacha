@@ -10,7 +10,7 @@
 import { Component, Vue } from "vue-property-decorator";
 import router from "@/router";
 import { gacha } from "@/store/index.ts";
-import { convertHexToHsl, selectTextColor } from "@/util/colorUtil";
+import { convertHexToHslStr, selectTextColor } from "@/util/colorUtil";
 
 @Component({
   name: "collection-container",
@@ -22,8 +22,7 @@ export default class CollectionContainer extends Vue {
     return gacha.colorList;
   }
   convert(hex: string): string {
-    // eslint-disable-next-line no-console
-    return convertHexToHsl(hex);
+    return convertHexToHslStr(hex);
   }
   selectTextColor(hex: string): string {
     return selectTextColor(hex);

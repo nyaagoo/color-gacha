@@ -10,17 +10,32 @@
               v-icon.rarity(v-for="i in color.rarity" :key="i" size="36" :style="{'color':color.backgroundColor}") star
           section.color-detail
             p {{ color.name }} / {{color.ruby}} / {{color.code}}
+          p
+            b 彩度別
+          section.color-card-container
+            .mini-card(v-for="(hsl, index) in eachSaturationList" :key="index" :style="{'background-color': `hsl(${hsl.hue},${hsl.saturation}%,${hsl.lightness}%)`}")
+          p
+            b 輝度別
+          section.color-card-container
+            .mini-card(v-for="(hsl, index) in eachLightnessList" :key="index" :style="{'background-color': `hsl(${hsl.hue},${hsl.saturation}%,${hsl.lightness}%)`}")
         v-divider
         v-card-actions
           v-spacer
-          v-btn(color='primary', flat='', @click="closeDialog()") I accept
+          v-btn(color='primary', flat='', @click="closeDialog()") 閉じる
 
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import router from "@/router";
 import { dialog, colorDetail } from "@/store/index";
-import { ColorExtendsRarity } from "../../model/color";
+import { ColorExtendsRarity, HSL } from "@/model/color";
+import {
+  convertHexToHslStr,
+  selectTextColor,
+  generateEachSaturation,
+  generateEachLightness,
+  convertHexToHsl
+} from "@/util/colorUtil";
 
 @Component({
   name: "dialog-color-detail",
@@ -30,6 +45,16 @@ export default class DialogColorDetail extends Vue {
   backgroundColor: string = "#ff00ff";
   get color(): ColorExtendsRarity {
     return colorDetail.color;
+  }
+
+  get eachSaturationList(): HSL[] {
+    const hsl = convertHexToHsl(colorDetail.color.code);
+    return generateEachSaturation(hsl.hue, hsl.lightness);
+  }
+
+  get eachLightnessList(): HSL[] {
+    const hsl = convertHexToHsl(colorDetail.color.code);
+    return generateEachLightness(hsl.hue, hsl.saturation);
   }
 
   get isVisible(): boolean {
@@ -60,4 +85,13 @@ export default class DialogColorDetail extends Vue {
   color yellow
 .color-detail
   padding 8px
+.color-card-container
+  display flex
+  flex-wrap wrap
+  justify-content center
+.mini-card
+  margin 8px 0
+  width 20%
+  height 60px
+  background-color red
 </style>

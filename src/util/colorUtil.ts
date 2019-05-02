@@ -1,4 +1,5 @@
 import * as colorConverter from "color-convert";
+import { HSL } from "@/model/color";
 /*
 export default class colorUtil {
   convertHexToHsl(hex: string) {
@@ -7,8 +8,45 @@ export default class colorUtil {
   }
 }
 */
+export function convertHexToHsl(hex: string): HSL {
+  if (hex.startsWith("#")) hex = hex.slice(1, 7);
+  const hsl = colorConverter.hex.hsl(hex);
+  return { hue: hsl[0], saturation: hsl[1], lightness: hsl[2] };
+}
 
-export function convertHexToHsl(hex: string): string {
+export function convertHexToHslStr(hex: string): string {
+  if (hex.startsWith("#")) hex = hex.slice(1, 7);
+  const hsl = colorConverter.hex.hsl(hex);
+  return `hsl(${hsl[0]}, ${hsl[1]}%, ${hsl[2]}%)`;
+}
+
+/**
+ * 引数の色相+彩度に対応する、10%毎の彩度のhsl配列を作成する
+ * @param hue 色相
+ * @param lightness 輝度
+ */
+export function generateEachSaturation(hue: number, lightness: number): HSL[] {
+  let hslList: HSL[] = [];
+  for (let i = 0; i < 10; i++) {
+    hslList.push({ hue: hue, saturation: i * 10, lightness: lightness });
+  }
+  return hslList;
+}
+
+/**
+ * 引数の色相+彩度に対応する、10%毎の輝度のhsl配列を作成する
+ * @param hue 色相
+ * @param saturation 彩度
+ */
+export function generateEachLightness(hue: number, saturation: number): HSL[] {
+  let hslList: HSL[] = [];
+  for (let i = 0; i < 10; i++) {
+    hslList.push({ hue: hue, saturation: saturation, lightness: i * 10 });
+  }
+  return hslList;
+}
+
+export function convertHexToHslStrArray(hex: string): string {
   if (hex.startsWith("#")) hex = hex.slice(1, 7);
   const hsl = colorConverter.hex.hsl(hex);
   return `hsl(${hsl[0]}, ${hsl[1]}%, ${hsl[2]}%)`;
