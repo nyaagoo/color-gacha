@@ -1,7 +1,7 @@
 <template lang="pug">
   .gacha-toolbar
     v-toolbar(color='cyan' dark fixed app height=48)
-      v-toolbar-title Application2
+      v-toolbar-title ガチャ
       v-spacer
       menu-transit-buttons
 </template>

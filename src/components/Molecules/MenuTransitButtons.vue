@@ -1,9 +1,9 @@
 <template lang="pug">
-  .menu-transit-buttons
-    v-btn(@click="transitGacha()") ガチャ
-    v-btn(@click="transitCollection()") コレクション
-    v-btn(@click="transitManage()") 管理ページ
-    v-btn(@click="logout()") ログアウト
+  v-toolbar-items
+    v-btn(flat @click="transitGacha()") ガチャ
+    v-btn(flat @click="transitCollection()") コレクション
+    v-btn(flat @click="transitManage()") 管理ページ
+    v-btn(flat @click="logout()") ログアウト
 </template>
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";

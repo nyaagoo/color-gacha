@@ -95,6 +95,7 @@ class Gacha extends VuexModule {
       if (color === undefined) {
         clearInterval(intervalId);
         await this.animationRarity();
+        window.addEventListener("click", this.animationTurnOver, true);
         return;
       }
       gacha.UNSHIFT_DISPLAY_CARD_LIST(color!);
@@ -124,6 +125,27 @@ class Gacha extends VuexModule {
         );
         this.SET_ANIMATION_PULSE(pluse);
       }
+    });
+  }
+
+  @Action({ rawError: true })
+  public async animationTurnOver() {
+    window.removeEventListener("click", this.animationTurnOver, true);
+    const timeLine = new TimelineMax();
+    gacha.animationKill();
+
+    this.displayCardList.forEach((card, index) => {
+      timeLine
+        .to(`.color-box${index}`, 0.4, {
+          rotationY: "180deg",
+          backgroundColor: card.code,
+          backgroundImage: "none",
+          borderColor: "none",
+          scale: 1.2
+        })
+        .to(`.color-box${index}`, 0.2, {
+          scale: 1.0
+        });
     });
   }
 
