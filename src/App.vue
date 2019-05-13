@@ -3,11 +3,16 @@
     v-app
       v-content
         router-view
+        dialog-color-detail
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-@Component
+import DialogColorDetail from "@/components/Organisms/DialogColorDetail.vue";
+@Component({
+  name: "gacha-template",
+  components: { "dialog-color-detail": DialogColorDetail }
+})
 export default class HelloWorld extends Vue {}
 </script>
 

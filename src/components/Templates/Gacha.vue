@@ -3,7 +3,6 @@
     gacha-container
     .login-conitaner
       gacha-toolbar
-    dialog-color-detail
 </template>
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
@@ -19,8 +18,7 @@ import DialogColorDetail from "@/components/Organisms/DialogColorDetail.vue";
   components: {
     "gacha-container": GachaContainer,
     "gacha-toolbar": GachaToolbar,
-    "gacha-collection": GachaCollection,
-    "dialog-color-detail": DialogColorDetail
+    "gacha-collection": GachaCollection
   }
 })
 export default class GachaTemplate extends Vue {

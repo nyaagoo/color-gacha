@@ -1,26 +1,28 @@
 <template lang="pug">
   .collection-container
-    v-btn(@click="transit()") aa
-    v-btn(@click="transit()") aa
-    section.collection-wrapper
-      .collection-item(v-for="color in colorCollection" :key="color.idRoot" :style="{'background-color':convert(color.code)}")
-        span(:style="{'color': selectTextColor(color.code)}")
-         b {{ color.name }}
-    section.button
-      v-btn aa
-      
+    v-btn(@click="selectStyleColumn()") カラム形式
+    v-btn(@click="selectStylePeriodic()") グリッド形式
+    collection-list-column(v-if="collectionStyle === 'column'")
+    collection-list-periodic(v-if="collectionStyle === 'periodic'")
 </template>
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import router from "@/router";
 import { gacha } from "@/store/index.ts";
 import { convertHexToHslStr, selectTextColor } from "@/util/colorUtil";
+import CollectionListColumn from "@/components/Organisms/CollectionList/CollectionListColumn.vue";
+import CollectionListPeriodic from "@/components/Organisms/CollectionList/CollectionListPeriodic.vue";
 
 @Component({
   name: "collection-container",
-  components: {}
+  components: {
+    "collection-list-column": CollectionListColumn,
+    "collection-list-periodic": CollectionListPeriodic
+  }
 })
 export default class CollectionContainer extends Vue {
+  collectionStyle: "column" | "periodic" = "column";
+
   get colorCollection() {
     //TODO: すべてのカラーリストから取ってきている。個人の所有しているカラーリストを取得する
     return gacha.colorList;
@@ -30,6 +32,12 @@ export default class CollectionContainer extends Vue {
   }
   selectTextColor(hex: string): string {
     return selectTextColor(hex);
+  }
+  selectStyleColumn() {
+    this.collectionStyle = "column";
+  }
+  selectStylePeriodic() {
+    this.collectionStyle = "periodic";
   }
 }
 </script>
