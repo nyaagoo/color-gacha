@@ -1,9 +1,13 @@
 <template lang="pug">
   .collection-container
+    v-btn(@click="transit()") aa
+    v-btn(@click="transit()") aa
     section.collection-wrapper
       .collection-item(v-for="color in colorCollection" :key="color.idRoot" :style="{'background-color':convert(color.code)}")
         span(:style="{'color': selectTextColor(color.code)}")
-         b {{color.name}}
+         b {{ color.name }}
+    section.button
+      v-btn aa
       
 </template>
 <script lang="ts">
@@ -33,6 +37,8 @@ export default class CollectionContainer extends Vue {
 .collection-container
   margin auto
   background-color #acacac
+  width 1000px
+  height calc(100vh - 48px)
 .collection-wrapper
   display flex
   flex-wrap wrap
