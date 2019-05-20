@@ -7,7 +7,7 @@ import {
   Module
 } from "vuex-module-decorators";
 import store from "@/store/store";
-import { login, user } from "@/store/index";
+import { user } from "@/store/index";
 import { Color, ColorExtendsRarity } from "@/model/color";
 import { raritySetting } from "@/model/static";
 import firebase from "firebase";
@@ -15,6 +15,7 @@ import { TweenMax, TimelineMax } from "gsap";
 
 @Module({ dynamic: true, store, name: "gacha", namespaced: true })
 class Gacha extends VuexModule {
+  isLoading: boolean = false;
   // #region STATE
   colorList: Color[] = [];
 
@@ -28,6 +29,11 @@ class Gacha extends VuexModule {
   // #endregion
 
   // #region MUTATION
+  @Mutation
+  public SET_IS_LOADING(bool: boolean) {
+    this.isLoading = bool;
+  }
+
   @Mutation
   public SET_COLOR_LIST(list: Color[]) {
     this.colorList = list;
@@ -74,6 +80,8 @@ class Gacha extends VuexModule {
 
   @Action({ rawError: true })
   public async gacha() {
+    this.SET_IS_LOADING(true);
+    this.SET_DISPLAY_CARD_LIST([]);
     const gachaList: Color[] = [];
     for (let i = 0; i < 10; i++) {
       const random = Math.floor(Math.random() * this.colorList.length);
@@ -133,6 +141,8 @@ class Gacha extends VuexModule {
     window.removeEventListener("click", this.animationTurnOver, true);
     const timeLine = new TimelineMax();
     gacha.animationKill();
+
+    this.SET_IS_LOADING(false);
 
     this.displayCardList.forEach((card, index) => {
       timeLine
