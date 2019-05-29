@@ -15,7 +15,6 @@
 import { Component, Vue } from "vue-property-decorator";
 import router from "@/router";
 import { Color, ColorExtendsRarity } from "@/model/color";
-import { raritySetting } from "@/model/static";
 import { gacha, login, user, dialog, colorDetail } from "@/store/index";
 import { TweenMax, TimelineMax } from "gsap";
 import CardOnTheBack from "@/components/Molecules/CardOnTheBack.vue";
@@ -74,9 +73,8 @@ card-on-the-back
   height 200px
 .list-move
   transition all .5s
-.list-enter-active, .list-leave-active {
+.list-enter-active, .list-leave-active
   transition: all .5s;
-}
 .list-enter
   opacity 0
   transform translateY(-80px)

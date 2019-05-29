@@ -9,7 +9,7 @@ import {
 import store from "@/store/store";
 import { user } from "@/store/index";
 import { Color, ColorExtendsRarity } from "@/model/color";
-import { raritySetting } from "@/model/static";
+import { RarityBackgroundColor, RarityBorderColor } from "@/model/color";
 import firebase from "firebase";
 import { TweenMax, TimelineMax } from "gsap";
 
@@ -88,12 +88,17 @@ class Gacha extends VuexModule {
       gachaList.push(this.colorList[random]);
     }
     const colorExtendsRarity: ColorExtendsRarity[] = gachaList.map(x => {
-      const colors = raritySetting.find(r => r.rarity === x.rarity);
+      let backgroundColor = "grey";
+      let borderColor = "grey";
+      if (RarityBackgroundColor.has(x.rarity))
+        backgroundColor = RarityBackgroundColor.get(x.rarity)!;
+      if (RarityBorderColor.has(x.rarity))
+        borderColor = RarityBorderColor.get(x.rarity)!;
       return {
         ...x,
-        backgroundColor: colors!.backgroundColor,
-        borderColor: colors!.borderColor
-      } as ColorExtendsRarity;
+        backgroundColor: backgroundColor,
+        borderColor: borderColor
+      };
     });
 
     this.SET_GACHA_LIST(colorExtendsRarity);

@@ -73,6 +73,23 @@ class Login extends VuexModule {
       alert("logoutに失敗しました。");
     }
   }
+
+  @Action({ rawError: true })
+  public async increment() {
+    const db = firebase.firestore();
+    const increment = firebase.firestore.FieldValue.increment(1);
+    const arrayUnion = firebase.firestore.FieldValue.arrayUnion({
+      id: 2,
+      count: 3
+    });
+
+    const storyRef = db.collection("stories").doc("helloWorld");
+
+    storyRef.update({ colorr: arrayUnion });
+    const doc = (await storyRef.get()).data()!.colors;
+    // eslint-disable-next-line no-console
+    console.log(doc);
+  }
   // #endregion
 }
 export const login = getModule(Login);

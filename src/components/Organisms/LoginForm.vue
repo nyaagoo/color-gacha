@@ -9,6 +9,7 @@
               v-btn(color="primary" @click="loginGoogle()") Googleアカウントで始める！
             .continue-btn-container(v-else)
               v-btn(color="primary" @click="alreadyLogin()") 続きから始める
+              v-btn(color="primary" @click="increment()") increment
 </template>
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
@@ -50,6 +51,9 @@ export default class LoginForm extends Vue {
   }
   logout() {
     firebase.auth().signOut();
+  }
+  increment() {
+    login.increment();
   }
 }
 </script>
