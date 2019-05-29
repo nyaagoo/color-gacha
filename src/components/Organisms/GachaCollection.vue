@@ -19,12 +19,14 @@ import { gacha } from "@/store/index";
 })
 export default class GachaCollection extends Vue {
   findGachaColorBackgroundColor(i: number): string {
-    const color = gacha.gachaList.find(color => i === color.idRoot);
+    const color = gacha.gachaList.find(color => "color_" + i === color.idRoot);
     if (color === undefined) return "#000000";
     else return color.code;
   }
   findHasColorBackgroundColor(i: number): string {
-    const color = gacha.hadColorList.find(color => i === color.idRoot);
+    const color = gacha.hadColorList.find(
+      color => "color_" + i === color.idRoot
+    );
     if (color === undefined) return "#000000";
     else return color.code;
   }

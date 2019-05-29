@@ -4,20 +4,21 @@
       p {{ gachaMasterData.displayName }}
       p ユーザーID: sdfa
       v-btn(@click="UpdateMasterColor()" color="primary") UPDATE!!
+      v-btn(@click="Update()" color="primary") tuyoi
       .flex-container(v-for="item in colorList")
         .color-sample(:style='{ "background-color": `${item.code}`}')
-        v-text-field.column-number(v-model="item.idRoot" label="idRoot" placeholder="ID Root" solo )
-        v-text-field.column-number(v-model="item.id" label="id" placeholder="ID" solo)
-        v-text-field(v-model="item.code" label="Code" placeholder="Code" solo)
-        v-text-field(v-model="item.name" label="Name" placeholder="Name" solo)
-        v-text-field(v-model="item.ruby" label="Ruby" placeholder="Ruby" solo)
-        v-text-field.column-number(v-model="item.rarity" label="Rarity" placeholder="Rarity" solo)
-        v-text-field.column-number(v-model="item.purchasability" label="Purchasability" placeholder="Purchasability" solo)
+        span.column.column-number {{ item.idRoot }}
+        span.column.column-number {{ item.id }}
+        span.column {{ item.code }}
+        span.column {{ item.name }}
+        span.column {{ item.ruby }}
+        span.column.column-number {{ item.rarity }}
+        span.column.column-number {{ item.purchasability }}
       .add-field
         v-btn(color="primary" @click="addField()")
           v-icon() add
           | フィールドの追加
-    section.section-login
+    section
 </template>
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
@@ -37,16 +38,26 @@ export default class ManageContainer extends Vue {
     this.colorList = gachaModify.gachaMasterData.colorList;
     return gachaModify.gachaMasterData;
   }
+
   created() {
     gachaModify.fetchGachaData();
+  }
+  Update() {
+    const list = gachaModify.gachaMasterData.colorList;
+    const aa = list.map(color => ({
+      ...color,
+      id: "color_" + color.id,
+      idRoot: "color_" + color.idRoot
+    }));
+    gachaModify.UpdateColorList(aa);
   }
   UpdateMasterColor() {
     gachaModify.UpdateColorList(this.colorList);
   }
   addField() {
     gachaModify.gachaMasterData.colorList.push({
-      idRoot: 1,
-      id: 1,
+      idRoot: "",
+      id: "",
       name: "",
       ruby: "",
       code: "#",
@@ -58,23 +69,23 @@ export default class ManageContainer extends Vue {
 </script>
 <style lang="stylus" scoped>
 .manage-container
-  width 1920px
+  width 1080px
   margin auto
 .section-intro
   padding 20px
-  background-color #EFEFEF
-  height 900px
-.section-login
-  background-color #c6ddfd
   height 900px
 .flex-container
   display flex
   flex-wrap wrap
   justify-content space-between
+  border-bottom 1px solid lightgray
 .color-box-wrapper
   margin 8px
   height 180px
   width 160px
+.column
+  width 160px
+  margin auto
 .color-box
   height 160px
   width 100%

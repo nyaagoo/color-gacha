@@ -1,6 +1,6 @@
 export interface Color {
-  idRoot: number;
-  id: number;
+  idRoot: string;
+  id: string;
   name: string;
   ruby: string;
   code: string;
@@ -13,7 +13,7 @@ export interface ColorExtendsRarity extends Color {
 }
 
 export interface Gacha {
-  id: number;
+  id: string;
   name: string;
   displayName: string;
   discription: string;

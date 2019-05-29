@@ -55,8 +55,8 @@ class GachaModify extends VuexModule {
     const gachaName = "master";
     const color: Color[] = colorList.map(color => ({
       ...color,
-      id: Number(color.id),
-      idRoot: Number(color.idRoot),
+      id: color.id,
+      idRoot: color.idRoot,
       purchasability: Number(color.purchasability),
       rarity: Number(color.rarity)
     }));
